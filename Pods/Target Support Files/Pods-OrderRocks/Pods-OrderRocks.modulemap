@@ -1,0 +1,6 @@
+framework module Pods_OrderRocks {
+  umbrella header "Pods-OrderRocks-umbrella.h"
+
+  export *
+  module * { export * }
+}

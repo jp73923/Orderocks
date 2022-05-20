@@ -75,8 +75,13 @@ class HomeViewController: UIViewController {
                     }
                 } else {
                     if openCheckOrderPage {
-                        let url = URL(string: webUrl + "Admin/Order/OrderValidation")!
-                        webView.load(URLRequest(url: url))
+                        if let orderId = UserDefaults.standard.value(forKey: "OrderId") as? String {
+                            let url = URL(string: webUrl + "Admin/Order/OrderValidation?OrderId=" + orderId)!
+                            webView.load(URLRequest(url: url))
+                        } else {
+                            let url = URL(string: webUrl + "Admin/Order/OrderValidation")!
+                            webView.load(URLRequest(url: url))
+                        }
                     } else {
                         let url = URL(string: webUrl)!
                         webView.load(URLRequest(url: url))

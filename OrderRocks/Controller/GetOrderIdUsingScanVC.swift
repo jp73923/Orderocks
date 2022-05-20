@@ -99,6 +99,11 @@ class GetOrderIdUsingScanVC: UIViewController,AVCaptureMetadataOutputObjectsDele
             
         }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UserDefaults.standard.setValue("", forKey: "OrderId")
+        UserDefaults.standard.synchronize()
+    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -211,7 +216,7 @@ class GetOrderIdUsingScanVC: UIViewController,AVCaptureMetadataOutputObjectsDele
                 qrScanValue = qrScanValue.replacingOccurrences(of: "*", with: "")
                 qrScanValue = qrScanValue.replacingOccurrences(of: " ", with: "")
 
-                let strURL = "https://stage.orderocks.com/Admin/Order/OrderValidation?OrderId=" + qrScanValue
+                let strURL = Constants.baseURL + "Admin/Order/OrderValidation?OrderId=" + qrScanValue
                 
                 UserDefaults.standard.setValue(strURL, forKey: "SaveOrderURL")
                 UserDefaults.standard.synchronize()

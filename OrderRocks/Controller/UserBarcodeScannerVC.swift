@@ -120,25 +120,24 @@ class UserBarcodeScannerVC: UIViewController,AVCaptureMetadataOutputObjectsDeleg
         task.resume()
     }
     override func viewWillAppear(_ animated: Bool) {
-            if #available(iOS 11, *) {
-                let dataStore = WKWebsiteDataStore.default()
-                dataStore.httpCookieStore.getAllCookies({ (cookies) in
-                    print(cookies)
-                    for i in cookies{
-                        let dict = i
-                        if dict.name == ".Nop.Customer"{
-                            Resultvalue = dict.value
-                        }
-                    }
-                })
-            } else {
-                guard let cookies = HTTPCookieStorage.shared.cookies else {
-                    return
-                }
+        if #available(iOS 11, *) {
+            let dataStore = WKWebsiteDataStore.default()
+            dataStore.httpCookieStore.getAllCookies({ (cookies) in
                 print(cookies)
+                for i in cookies{
+                    let dict = i
+                    if dict.name == ".Nop.Customer"{
+                        Resultvalue = dict.value
+                    }
+                }
+            })
+        } else {
+            guard let cookies = HTTPCookieStorage.shared.cookies else {
+                return
             }
-            
+            print(cookies)
         }
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

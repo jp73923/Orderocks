@@ -268,7 +268,7 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
         if navigationAction.navigationType == .linkActivated  {
             if let url = navigationAction.request.url,
                UIApplication.shared.canOpenURL(url) {
-                
+                //https://stage.orderocks.com/Admin/Product/ScanBarcode
                 let url_str = url.absoluteString
                 
                 if url_str.contains("PdfInvoice") {
@@ -283,7 +283,16 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
                     decisionHandler(.allow)
                     
                 }else{
-                    if url_str.contains("barcodescanner") {
+                    if url_str.contains("Product/ScanBarcode") {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
+                              //  UserDefaults.standard.setValue(false, forKey: "Open_CheckOrder_Page")
+                              //  UserDefaults.standard.synchronize()
+                                self.showVC(ScanProductVC.self)
+                                decisionHandler(.allow)
+                            }
+                        }
+                    } else if url_str.contains("barcodescanner") {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
                             let url = URL(string: self.webUrl)!
                             webView.load(URLRequest(url: url))

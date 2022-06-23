@@ -1,19 +1,16 @@
 //
-//  UserBarcodeScannerVC.swift
-//  Life Solutions
+//  ScanProductVC.swift
+//  OrderRocks
 //
-//  Created by Mac Os on 03/11/18.
-//  Copyright © 2018 Mac Os. All rights reserved.
+//  Created by Jay on 08/06/22.
 //
 
-
-import Foundation
 import UIKit
 import AVFoundation
 import Alamofire
 import WebKit
-var Resultvalue  = ""
-class UserBarcodeScannerVC: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
+
+class ScanProductVC: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
     
     //***********************************************
     //MARK:-
@@ -75,70 +72,39 @@ class UserBarcodeScannerVC: UIViewController,AVCaptureMetadataOutputObjectsDeleg
         bntInfo.isUserInteractionEnabled = true
         btnFlash.isUserInteractionEnabled = true
         
-      //  self.jumptoProduct(strCode: "1122334455")
-    }
-    func jumptoProduct(strCode:String) {
-        let result = Constants.baseURL + "product/ProductExist?code=" + strCode
+        //For Test My side
+       /* let strURL = "https://stage.orderocks.com/Admin/Order/OrderValidation?OrderId=55"
         
-        var request = URLRequest(url: URL(string: result)!,timeoutInterval: Double.infinity)
-        request.httpMethod = "GET"
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                print(String(describing: error))
-                
-                return
-            }
-            let resultApi = (String(data: data, encoding: .utf8)!)
-            let result = self.convertToDictionary(text: resultApi)
-            let bool = result!["success"] as? Bool ?? false
-            
-            if bool{
-                let links = Constants.baseURL + "product/ProductDetails?code=" + strCode
-                
-                DispatchQueue.main.sync {
-                    UserDefaults.standard.set(links, forKey: "Product_Open")
-                    UserDefaults.standard.synchronize()
-                    self.navigationController?.popViewController(animated: true)
-                }
-                
-            }else{
-                DispatchQueue.main.sync {
-                    let appdelegate = UIApplication.shared.delegate as! AppDelegate
-
-                    //(appdelegate.window!.rootViewController! as! UINavigationController).viewControllers.last!.view.addSubview(self.RetryScanViews)
-                    self.view.addSubview(self.RetryScanViews)
-                    self.RetryScanViews.frame = UIScreen.main.bounds
-                    self.RetryScanViews.PopUpView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
-                    self.RetryScanViews.btnOpenCamera.addTarget(self, action: #selector(self.Opencamera(_:)), for: .touchUpInside)
-                    UIView.animate(withDuration: 0.25)
-                    {
-                        self.RetryScanViews.PopUpView.transform = CGAffineTransform.identity
-                    }
-                }
-            }
-        }
-        task.resume()
+        UserDefaults.standard.setValue(strURL, forKey: "SaveOrderURL")
+        UserDefaults.standard.synchronize()
+        backVC()*/
     }
     override func viewWillAppear(_ animated: Bool) {
-        if #available(iOS 11, *) {
-            let dataStore = WKWebsiteDataStore.default()
-            dataStore.httpCookieStore.getAllCookies({ (cookies) in
-                print(cookies)
-                for i in cookies{
-                    let dict = i
-                    if dict.name == ".Nop.Customer"{
-                        Resultvalue = dict.value
+            if #available(iOS 11, *) {
+                let dataStore = WKWebsiteDataStore.default()
+                dataStore.httpCookieStore.getAllCookies({ (cookies) in
+                    print(cookies)
+                    for i in cookies{
+                        let dict = i
+                        if dict.name == ".Nop.Customer"{
+                            Resultvalue = dict.value
+                        }
                     }
+                })
+            } else {
+                guard let cookies = HTTPCookieStorage.shared.cookies else {
+                    return
                 }
-            })
-        } else {
-            guard let cookies = HTTPCookieStorage.shared.cookies else {
-                return
+                print(cookies)
             }
-            print(cookies)
+            
         }
-    }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UserDefaults.standard.setValue("", forKey: "OrderId")
+        UserDefaults.standard.synchronize()
+    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -245,98 +211,18 @@ class UserBarcodeScannerVC: UIViewController,AVCaptureMetadataOutputObjectsDeleg
                 //messageLabel.text = metadataObj.stringValue
                 lastCapturedCode = metadataObj.stringValue
                 
-                let qrScanValue = String(lastCapturedCode!)
+                var qrScanValue = String(lastCapturedCode!)
                 print(qrScanValue)
-                var finalQR = ""
-                if let numberAsInt = Int(qrScanValue) as? Int{
-                    finalQR = "\(numberAsInt)"
-                }
                 
-                print(finalQR)
-                
-                let result = Constants.baseURL + "product/ProductExist?code=" + finalQR
-                
-                var request = URLRequest(url: URL(string: result)!,timeoutInterval: Double.infinity)
-                request.httpMethod = "GET"
-                let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                    guard let data = data else {
-                        print(String(describing: error))
-                        
-                        return
-                    }
-                    let resultApi = (String(data: data, encoding: .utf8)!)
-                    let result = self.convertToDictionary(text: resultApi)
-                    let bool = result!["success"] as? Bool ?? false
-                    
-                    if bool{
-                        DispatchQueue.main.sync {
-                            let result = Constants.baseURL + "Shoppingcart/AddProductToCartAPI?barcode=" + finalQR + "&customerGuid=" + Resultvalue
-                            var request = URLRequest(url: URL(string: result)!,timeoutInterval: Double.infinity)
-                            request.httpMethod = "GET"
-                            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                                guard let data = data else {
-                                    print(String(describing: error))
-                                    return
-                                }
-                                let resultApi = (String(data: data, encoding: .utf8)!)
-                                let result = self.convertToDictionary(text: resultApi)
-                                let bool = result!["success"] as? Bool ?? false
-                                
-                                if bool{
-                                    let imageView = UIImageView(frame: CGRect(x: 15, y: 5, width: 50, height: 50))
-                                    imageView.image = UIImage.init(named: "ic_cart_icon")
-                                    let alert = UIAlertController(title: nil, message: "     Added to cart!", preferredStyle: UIAlertController.Style.alert)
-                                    alert.view.addSubview(imageView)
+                qrScanValue = qrScanValue.replacingOccurrences(of: "*", with: "")
+                qrScanValue = qrScanValue.replacingOccurrences(of: " ", with: "")
 
-                                    if #available(iOS 13.0, *) {
-                                        alert.overrideUserInterfaceStyle = UIUserInterfaceStyle.dark
-                                    } else {
-                                        // Fallback on earlier versions
-                                    }
-                                    DispatchQueue.main.sync {
-                                        self.present(alert, animated: true, completion: nil)
-                                    }
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                        self.dismiss(animated: true)
-                                        self.captureSession?.startRunning()
-                                    }
-                                } else {
-                                    if let arrmsg = result!["message"] as? NSArray {
-                                        let alert = UIAlertController(title: nil, message: arrmsg[0] as? String, preferredStyle: UIAlertController.Style.alert)
-                                        if #available(iOS 13.0, *) {
-                                            alert.overrideUserInterfaceStyle = UIUserInterfaceStyle.dark
-                                        } else {
-                                            // Fallback on earlier versions
-                                        }
-                                        DispatchQueue.main.sync {
-                                            self.present(alert, animated: true, completion: nil)
-                                        }
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                            self.dismiss(animated: true)
-                                            self.captureSession?.startRunning()
-                                        }
-                                    }
-                                }
-                            }
-                            task.resume()
-                        }
-                    }else{
-                        DispatchQueue.main.sync {
-                            let alert = UIAlertController(title: nil, message: "Product not found!", preferredStyle: UIAlertController.Style.alert)
-                            if #available(iOS 13.0, *) {
-                                alert.overrideUserInterfaceStyle = UIUserInterfaceStyle.dark
-                            } else {
-                                // Fallback on earlier versions
-                            }
-                            self.present(alert, animated: true, completion: nil)
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                self.dismiss(animated: true)
-                                self.captureSession?.startRunning()
-                            }
-                        }
-                    }
-                }
-                task.resume()
+                let strURL = Constants.baseURL + "Admin/Order/OrderValidation?OrderId=" + qrScanValue
+                
+                UserDefaults.standard.setValue(strURL, forKey: "SaveOrderURL")
+                UserDefaults.standard.synchronize()
+                backVC()
+                
                 self.captureSession?.stopRunning()
             }
         }
@@ -473,19 +359,11 @@ class UserBarcodeScannerVC: UIViewController,AVCaptureMetadataOutputObjectsDeleg
 //MARK:-   IBActions
 //***********************************************
 
-extension UserBarcodeScannerVC {
+extension ScanProductVC {
     
-    @IBAction func menuAction(_ sender: UIButton) {
-        UserDefaults.standard.setValue(true, forKey: "Is_Back")
+    @IBAction func btnBackAction(_ sender: UIButton) {
+        UserDefaults.standard.setValue(true, forKey: "Open_CheckOrder_Page")
         UserDefaults.standard.synchronize()
         backVC()
     }
-    
-    @IBAction func cartClick(_ sender: UIButton) {
-        UserDefaults.standard.set(Constants.baseURL + "cart", forKey: "Cart_Open")
-        UserDefaults.standard.synchronize()
-        self.navigationController?.popViewController(animated: true)
-    }
 }
-
-

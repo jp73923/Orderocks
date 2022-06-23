@@ -14,6 +14,7 @@
 		72E9CA6E25D1048B00C568D4 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E9CA6D25D1048B00C568D4 /* Logo.png */; };
 		88792A7A27F4AFFF001C1E0C /* GetOrderIdUsingScanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88792A7927F4AFFF001C1E0C /* GetOrderIdUsingScanVC.swift */; };
 		8898888B27C1383A00C5E76A /* CheckProductExistScannerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8898888A27C1383A00C5E76A /* CheckProductExistScannerVC.swift */; };
+		88E2226D2850DC3E00482715 /* ScanProductVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E2226C2850DC3E00482715 /* ScanProductVC.swift */; };
 		A8E4068F265CC03B00879F5E /* UserBarcodeScannerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E4068D265CC03B00879F5E /* UserBarcodeScannerVC.swift */; };
 		A8E40690265CC03B00879F5E /* codeUrlVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E4068E265CC03B00879F5E /* codeUrlVC.swift */; };
 		A8E40694265CC09200879F5E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E40693265CC09200879F5E /* Extensions.swift */; };
@@ -50,6 +51,7 @@
 		72E9CA6D25D1048B00C568D4 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		88792A7927F4AFFF001C1E0C /* GetOrderIdUsingScanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetOrderIdUsingScanVC.swift; sourceTree = "<group>"; };
 		8898888A27C1383A00C5E76A /* CheckProductExistScannerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckProductExistScannerVC.swift; sourceTree = "<group>"; };
+		88E2226C2850DC3E00482715 /* ScanProductVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanProductVC.swift; sourceTree = "<group>"; };
 		95C2B678757EEAC8E4ABAD69 /* Pods_OrderRocks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OrderRocks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8E4068D265CC03B00879F5E /* UserBarcodeScannerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBarcodeScannerVC.swift; sourceTree = "<group>"; };
 		A8E4068E265CC03B00879F5E /* codeUrlVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = codeUrlVC.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				CEEB93DB25A34B5200ECF3A3 /* HomeViewController.swift */,
 				8898888A27C1383A00C5E76A /* CheckProductExistScannerVC.swift */,
 				88792A7927F4AFFF001C1E0C /* GetOrderIdUsingScanVC.swift */,
+				88E2226C2850DC3E00482715 /* ScanProductVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEEB93C025A331DA00ECF3A3 /* AppDelegate.swift in Sources */,
+				88E2226D2850DC3E00482715 /* ScanProductVC.swift in Sources */,
 				040F486F266A01580053A750 /* scannerInfoPopView.swift in Sources */,
 				8898888B27C1383A00C5E76A /* CheckProductExistScannerVC.swift in Sources */,
 				88792A7A27F4AFFF001C1E0C /* GetOrderIdUsingScanVC.swift in Sources */,

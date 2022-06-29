@@ -217,6 +217,11 @@ class ScanProductVC: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
                 qrScanValue = qrScanValue.replacingOccurrences(of: "*", with: "")
                 qrScanValue = qrScanValue.replacingOccurrences(of: " ", with: "")
 
+                //https://stage.orderocks.com/order/orderexists?orderid=1
+                
+                
+               // self.checkValidOrderId(orderID: qrScanValue)
+                
                 let strURL = Constants.baseURL + "Admin/Order/OrderValidation?OrderId=" + qrScanValue
                 
                 UserDefaults.standard.setValue(strURL, forKey: "SaveOrderURL")
@@ -226,6 +231,54 @@ class ScanProductVC: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
                 self.captureSession?.stopRunning()
             }
         }
+    }
+    
+    func checkValidOrderId(orderID:String) {
+        let result = Constants.baseURL + "order/orderexists?orderid=" + orderID
+        
+        var request = URLRequest(url: URL(string: result)!,timeoutInterval: Double.infinity)
+        request.httpMethod = "GET"
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                print(String(describing: error))
+                
+                return
+            }
+            let resultApi = (String(data: data, encoding: .utf8)!)
+            let result = self.convertToDictionary(text: resultApi)
+            let bool = result!["success"] as? Bool ?? false
+            
+            if bool{
+                //let links = Constants.baseURL + "product/ProductDetails?code=" + strCode
+                
+                DispatchQueue.main.sync {
+                    let strURL = Constants.baseURL + "Admin/Order/OrderValidation?OrderId=" + orderID
+
+                    UserDefaults.standard.setValue(strURL, forKey: "SaveOrderURL")
+                    UserDefaults.standard.synchronize()
+                    self.backVC()
+                   /* UserDefaults.standard.set(links, forKey: "Product_Open")
+                    UserDefaults.standard.synchronize()
+                    self.navigationController?.popViewController(animated: true)*/
+                }
+                
+            }else{
+                DispatchQueue.main.sync {
+                   /* let appdelegate = UIApplication.shared.delegate as! AppDelegate
+
+                    //(appdelegate.window!.rootViewController! as! UINavigationController).viewControllers.last!.view.addSubview(self.RetryScanViews)
+                    self.view.addSubview(self.RetryScanViews)
+                    self.RetryScanViews.frame = UIScreen.main.bounds
+                    self.RetryScanViews.PopUpView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+                    self.RetryScanViews.btnOpenCamera.addTarget(self, action: #selector(self.Opencamera(_:)), for: .touchUpInside)
+                    UIView.animate(withDuration: 0.25)
+                    {
+                        self.RetryScanViews.PopUpView.transform = CGAffineTransform.identity
+                    }*/
+                }
+            }
+        }
+        task.resume()
     }
     
     //***********************************************

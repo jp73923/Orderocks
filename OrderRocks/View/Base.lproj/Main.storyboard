@@ -272,59 +272,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Y4-iK-dYV">
+                            <wkWebView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9TI-88-Wva">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <subviews>
-                                    <wkWebView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9TI-88-Wva">
-                                        <rect key="frame" x="0.0" y="44" width="414" height="852"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <wkWebViewConfiguration key="configuration">
-                                            <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                            <wkPreferences key="preferences"/>
-                                        </wkWebViewConfiguration>
-                                    </wkWebView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AtN-up-NdA">
-                                        <rect key="frame" x="6" y="44" width="50" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="50" id="o3s-zn-hYL"/>
-                                            <constraint firstAttribute="width" secondItem="AtN-up-NdA" secondAttribute="height" id="oJd-YD-Yb8"/>
-                                        </constraints>
-                                        <state key="normal" image="Back"/>
-                                        <connections>
-                                            <action selector="menuAction:" destination="y6h-0y-oW5" eventType="touchUpInside" id="AEw-XW-oOx"/>
-                                            <action selector="menuAction:" destination="vGo-fE-Eqm" eventType="touchUpInside" id="MxD-jP-c6g"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="AtN-up-NdA" firstAttribute="leading" secondItem="1Y4-iK-dYV" secondAttribute="leading" constant="6" id="4QH-Sc-n5G"/>
-                                    <constraint firstAttribute="bottom" secondItem="9TI-88-Wva" secondAttribute="bottom" id="4uN-l6-8qD"/>
-                                    <constraint firstItem="9TI-88-Wva" firstAttribute="leading" secondItem="1Y4-iK-dYV" secondAttribute="leading" id="LpD-ak-Miq"/>
-                                    <constraint firstAttribute="trailing" secondItem="9TI-88-Wva" secondAttribute="trailing" id="eQX-pL-hc3"/>
-                                </constraints>
-                            </view>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="AZ0-Ga-7mw"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="AZ0-Ga-7mw" firstAttribute="trailing" secondItem="1Y4-iK-dYV" secondAttribute="trailing" id="2dr-6j-3GO"/>
-                            <constraint firstAttribute="bottom" secondItem="1Y4-iK-dYV" secondAttribute="bottom" id="6FJ-xz-O3Q"/>
-                            <constraint firstItem="1Y4-iK-dYV" firstAttribute="leading" secondItem="AZ0-Ga-7mw" secondAttribute="leading" id="7U3-VL-CkU"/>
-                            <constraint firstItem="AtN-up-NdA" firstAttribute="top" secondItem="AZ0-Ga-7mw" secondAttribute="top" id="XbX-0k-HsV"/>
-                            <constraint firstItem="1Y4-iK-dYV" firstAttribute="top" secondItem="lUG-9j-fbE" secondAttribute="top" id="Y6I-N8-Glj"/>
-                            <constraint firstItem="9TI-88-Wva" firstAttribute="top" secondItem="AZ0-Ga-7mw" secondAttribute="top" id="zrG-Tt-yuG"/>
+                            <constraint firstItem="9TI-88-Wva" firstAttribute="trailing" secondItem="AZ0-Ga-7mw" secondAttribute="trailing" id="8Rv-FR-03A"/>
+                            <constraint firstItem="9TI-88-Wva" firstAttribute="centerY" secondItem="lUG-9j-fbE" secondAttribute="centerY" id="EHa-z7-gyc"/>
+                            <constraint firstItem="9TI-88-Wva" firstAttribute="centerX" secondItem="lUG-9j-fbE" secondAttribute="centerX" id="Nyy-wB-w6P"/>
+                            <constraint firstItem="9TI-88-Wva" firstAttribute="leading" secondItem="AZ0-Ga-7mw" secondAttribute="leading" id="f2I-QW-dMt"/>
+                            <constraint firstAttribute="bottom" secondItem="9TI-88-Wva" secondAttribute="bottom" id="nyu-pa-BC1"/>
+                            <constraint firstItem="9TI-88-Wva" firstAttribute="top" secondItem="lUG-9j-fbE" secondAttribute="top" id="vrI-WA-q0j"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="iz3-ei-dxA"/>
                     <connections>
-                        <outlet property="btnBack" destination="AtN-up-NdA" id="vIT-hR-2cx"/>
                         <outlet property="webView" destination="9TI-88-Wva" id="M3Q-Wp-M86"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LoP-pE-aQh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4494" y="64"/>
+            <point key="canvasLocation" x="4492.753623188406" y="63.616071428571423"/>
         </scene>
         <!--Check Product Exist ScannerVC-->
         <scene sceneID="xhe-fU-eZ9">
@@ -610,7 +586,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Back" width="32" height="32"/>
         <image name="Logo.png" width="503" height="501"/>
         <image name="Scannerview" width="375" height="812"/>
         <image name="back-1" width="250" height="250"/>

@@ -20,7 +20,6 @@ class codeUrlVC: UIViewController {
     //***********************************************
     
     @IBOutlet weak var webView: WKWebView!
-    @IBOutlet weak var btnBack: UIButton!
     
     //***********************************************
     //MARK:-
@@ -45,9 +44,7 @@ class codeUrlVC: UIViewController {
         webView.scrollView.bouncesZoom = false
         webView.scrollView.alwaysBounceVertical = false
         webView.scrollView.alwaysBounceHorizontal = false
-        
-        btnBack.setImage(UIImage(named: "Back")?.tintWithColor(UIColor.black), for: .normal)
-        
+                
         urlOpen(link)
     }
     
@@ -66,23 +63,6 @@ class codeUrlVC: UIViewController {
         }
     }
 }
-
-//***********************************************
-//MARK:-
-//MARK:-   IBActions
-//***********************************************
-extension codeUrlVC {
-
-    @IBAction func menuAction(_ sender: UIButton) {
-        
-      //navigationController?.popToVC(HomeViewController.self)
-        if "https://stage.orderocks.com/barcodescannerback".contains("barcodescannerback") {
-            self.navigationController?.popViewController(animated: true)
-        }
-        //popToVC(HomeViewController.self)
-    }
-}
-
 
 //***********************************************
 //MARK:-

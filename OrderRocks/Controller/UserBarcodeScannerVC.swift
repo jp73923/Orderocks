@@ -270,7 +270,7 @@ class UserBarcodeScannerVC: UIViewController,AVCaptureMetadataOutputObjectsDeleg
                     
                     if bool{
                         DispatchQueue.main.sync {
-                            let result = Constants.baseURL + "Shoppingcart/AddProductToCartAPI?barcode=" + finalQR + "&customerGuid=" + Resultvalue
+                            let result = Constants.baseURL + "api/AddToCart?barcode=" + finalQR + "&customerGuid=" + Resultvalue
                             var request = URLRequest(url: URL(string: result)!,timeoutInterval: Double.infinity)
                             request.httpMethod = "GET"
                             let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -283,22 +283,23 @@ class UserBarcodeScannerVC: UIViewController,AVCaptureMetadataOutputObjectsDeleg
                                 let bool = result!["success"] as? Bool ?? false
                                 
                                 if bool{
-                                    let imageView = UIImageView(frame: CGRect(x: 15, y: 5, width: 50, height: 50))
-                                    imageView.image = UIImage.init(named: "ic_cart_icon")
-                                    let alert = UIAlertController(title: nil, message: "     Added to cart!", preferredStyle: UIAlertController.Style.alert)
-                                    alert.view.addSubview(imageView)
-
-                                    if #available(iOS 13.0, *) {
-                                        alert.overrideUserInterfaceStyle = UIUserInterfaceStyle.dark
-                                    } else {
-                                        // Fallback on earlier versions
-                                    }
                                     DispatchQueue.main.sync {
+                                        let imageView = UIImageView(frame: CGRect(x: 15, y: 5, width: 50, height: 50))
+                                        imageView.image = UIImage.init(named: "ic_cart_icon")
+                                        let alert = UIAlertController(title: nil, message: "     Added to cart!", preferredStyle: UIAlertController.Style.alert)
+                                        alert.view.addSubview(imageView)
+                                        
+                                        
+                                        if #available(iOS 13.0, *) {
+                                            alert.overrideUserInterfaceStyle = UIUserInterfaceStyle.dark
+                                        } else {
+                                            // Fallback on earlier versions
+                                        }
                                         self.present(alert, animated: true, completion: nil)
-                                    }
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                        self.dismiss(animated: true)
-                                        self.captureSession?.startRunning()
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                            self.dismiss(animated: true)
+                                            self.captureSession?.startRunning()
+                                        }
                                     }
                                 } else {
                                     if let arrmsg = result!["message"] as? NSArray {

@@ -334,6 +334,27 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
                 decisionHandler(.allow)
             }
         } else {
+            print(navigationAction.request.url)
+            if #available(iOS 11, *) {
+                let dataStore = WKWebsiteDataStore.default()
+                dataStore.httpCookieStore.getAllCookies({ (cookies) in
+                    print(cookies)
+                    for i in cookies{
+                        let dict = i
+                        if dict.name == ".Nop.Customer"{
+                            if dict.value != "" {
+                                print(dict.value)
+                            }
+                        }
+                    }
+                })
+            } else {
+                guard let cookies = HTTPCookieStorage.shared.cookies else {
+                    return
+                }
+                print(cookies)
+            }
+            
             decisionHandler(.allow)
         }
         

@@ -46,7 +46,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Hg-uK-0Qb">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -123,7 +123,7 @@
                             <constraint firstAttribute="trailing" secondItem="7PT-i4-Ikw" secondAttribute="trailing" constant="24" id="8eQ-TQ-7aJ"/>
                             <constraint firstItem="vMw-sF-zNe" firstAttribute="top" secondItem="KeT-kQ-cMW" secondAttribute="top" id="MfW-Ib-wD8"/>
                             <constraint firstItem="Ucx-v0-9kn" firstAttribute="leading" secondItem="Bik-HE-lck" secondAttribute="leading" constant="-25" id="Odx-xo-Twf"/>
-                            <constraint firstItem="6Hg-uK-0Qb" firstAttribute="top" secondItem="KeT-kQ-cMW" secondAttribute="top" id="SPk-0A-jcx"/>
+                            <constraint firstItem="6Hg-uK-0Qb" firstAttribute="top" secondItem="Bik-HE-lck" secondAttribute="top" id="SPk-0A-jcx"/>
                             <constraint firstItem="6Hg-uK-0Qb" firstAttribute="leading" secondItem="KeT-kQ-cMW" secondAttribute="leading" id="U5V-jN-kDv"/>
                             <constraint firstItem="vMw-sF-zNe" firstAttribute="leading" secondItem="KeT-kQ-cMW" secondAttribute="leading" id="WaW-Bw-EHf"/>
                             <constraint firstItem="Ucx-v0-9kn" firstAttribute="top" secondItem="Bik-HE-lck" secondAttribute="top" constant="50" id="ZOn-V6-274"/>
@@ -273,7 +273,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9TI-88-Wva">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -286,11 +286,10 @@
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="9TI-88-Wva" firstAttribute="trailing" secondItem="AZ0-Ga-7mw" secondAttribute="trailing" id="8Rv-FR-03A"/>
-                            <constraint firstItem="9TI-88-Wva" firstAttribute="centerY" secondItem="lUG-9j-fbE" secondAttribute="centerY" id="EHa-z7-gyc"/>
                             <constraint firstItem="9TI-88-Wva" firstAttribute="centerX" secondItem="lUG-9j-fbE" secondAttribute="centerX" id="Nyy-wB-w6P"/>
                             <constraint firstItem="9TI-88-Wva" firstAttribute="leading" secondItem="AZ0-Ga-7mw" secondAttribute="leading" id="f2I-QW-dMt"/>
                             <constraint firstAttribute="bottom" secondItem="9TI-88-Wva" secondAttribute="bottom" id="nyu-pa-BC1"/>
-                            <constraint firstItem="9TI-88-Wva" firstAttribute="top" secondItem="lUG-9j-fbE" secondAttribute="top" id="vrI-WA-q0j"/>
+                            <constraint firstItem="9TI-88-Wva" firstAttribute="top" secondItem="AZ0-Ga-7mw" secondAttribute="top" id="vrI-WA-q0j"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="iz3-ei-dxA"/>

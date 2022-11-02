@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , OSSubscriptionObserver {
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         UINavigationBar.appearance().isTranslucent = false
         
-        registerOneSignalNotification(launchOptions: launchOptions)
+       // registerOneSignalNotification(launchOptions: launchOptions)
         
         UIApplication.shared.statusBarUIView?.backgroundColor = UIColor.white
         //30, 93, 146

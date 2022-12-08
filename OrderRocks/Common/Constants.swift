@@ -14,8 +14,8 @@ class Constants: NSObject {
     
     
     
-    public static var baseURL = "https://orderocks.com/"
+   // public static var baseURL = "https://orderocks.com/"
     
-   // public static var baseURL = "https://stage.orderocks.com/"
+    public static var baseURL = "https://stage.orderocks.com/"
     
 }

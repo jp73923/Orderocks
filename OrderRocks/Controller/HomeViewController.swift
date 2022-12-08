@@ -76,8 +76,14 @@ class HomeViewController: UIViewController {
                 } else {
                     if openCheckOrderPage {
                         if let orderId = UserDefaults.standard.value(forKey: "OrderId") as? String {
-                            let url = URL(string: webUrl + "Admin/Order/OrderValidation?OrderId=" + orderId)!
-                            webView.load(URLRequest(url: url))
+                            if appdelegate.isFromProductUpdate {
+                                appdelegate.isFromProductUpdate = false
+                                let url = URL(string: Constants.baseURL + "Admin/Product/Edit/" + appdelegate.isProductId)!
+                                webView.load(URLRequest(url: url))
+                            } else {
+                                let url = URL(string: webUrl + "Admin/Order/OrderValidation?OrderId=" + orderId)!
+                                webView.load(URLRequest(url: url))
+                            }
                         } else {
                             let url = URL(string: webUrl + "Admin/Order/OrderValidation")!
                             webView.load(URLRequest(url: url))
@@ -283,11 +289,17 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
                     decisionHandler(.allow)
                     
                 }else{
-                    if url_str.contains("Product/ScanBarcode") {
+                    if url_str.contains("Product/ScanBarcode")  || url_str.contains("ScanBarcodeUpdateToProduct") {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
                               //  UserDefaults.standard.setValue(false, forKey: "Open_CheckOrder_Page")
                               //  UserDefaults.standard.synchronize()
+                                if url_str.contains("ScanBarcodeUpdateToProduct") {
+                                    appdelegate.isFromProductUpdate = true
+                                    appdelegate.isProductId = url_str.components(separatedBy: "=")[1]
+                                } else {
+                                    appdelegate.isFromProductUpdate = false
+                                }
                                 self.showVC(ScanProductVC.self)
                                 decisionHandler(.allow)
                             }
@@ -319,6 +331,8 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
                                 decisionHandler(.allow)
                             }
                         }
+                    }else if url_str.contains("PdfInvoice") {
+                        return
                     }else {
                         
                         decisionHandler(.allow)

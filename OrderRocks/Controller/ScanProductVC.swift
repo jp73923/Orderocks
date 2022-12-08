@@ -73,11 +73,40 @@ class ScanProductVC: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
         btnFlash.isUserInteractionEnabled = true
         
         //For Test My side
-       /* let strURL = "https://stage.orderocks.com/Admin/Order/OrderValidation?OrderId=55"
+      /*  let strURL = "https://stage.orderocks.com/API/ScanBarcodeUpdateToProduct?productId=1834&barcode=123"
+        //"https://stage.orderocks.com/API/ScanBarcodeUpdateToProduct?productId=6799&barcode=adffasfasd"
+        //"https://stage.orderocks.com/Admin/Order/OrderValidation?OrderId=55"
         
         UserDefaults.standard.setValue(strURL, forKey: "SaveOrderURL")
         UserDefaults.standard.synchronize()
         backVC()*/
+    }
+    
+    func isUpdateProduct(barcode:String) {
+        let result = Constants.baseURL + "API/ScanBarcodeUpdateToProduct?productId=" + appdelegate.isProductId + "&barcode=" + barcode
+        
+        var request = URLRequest(url: URL(string: result)!,timeoutInterval: Double.infinity)
+        request.httpMethod = "GET"
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                print(String(describing: error))
+                
+                return
+            }
+            let resultApi = (String(data: data, encoding: .utf8)!)
+            let result = self.convertToDictionary(text: resultApi)
+            let bool = result!["success"] as? Bool ?? false
+            
+            if bool{
+                DispatchQueue.main.sync {
+                    let strURL = Constants.baseURL + "Admin/Product/Edit/" + appdelegate.isProductId
+                    UserDefaults.standard.setValue(strURL, forKey: "SaveOrderURL")
+                    UserDefaults.standard.synchronize()
+                    self.backVC()
+                }
+            }
+        }
+        task.resume()
     }
     override func viewWillAppear(_ animated: Bool) {
             if #available(iOS 11, *) {
@@ -222,11 +251,15 @@ class ScanProductVC: UIViewController,AVCaptureMetadataOutputObjectsDelegate {
                 
                // self.checkValidOrderId(orderID: qrScanValue)
                 
-                let strURL = Constants.baseURL + "Admin/Order/OrderValidation?OrderId=" + qrScanValue
-                
-                UserDefaults.standard.setValue(strURL, forKey: "SaveOrderURL")
-                UserDefaults.standard.synchronize()
-                backVC()
+                if appdelegate.isFromProductUpdate {
+                    self.isUpdateProduct(barcode: qrScanValue)
+                } else {
+                    let strURL = Constants.baseURL + "Admin/Order/OrderValidation?OrderId=" + qrScanValue
+                    
+                    UserDefaults.standard.setValue(strURL, forKey: "SaveOrderURL")
+                    UserDefaults.standard.synchronize()
+                    backVC()
+                }
                 
                 self.captureSession?.stopRunning()
             }

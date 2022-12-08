@@ -78,7 +78,7 @@ class UserBarcodeScannerVC: UIViewController,AVCaptureMetadataOutputObjectsDeleg
       //  self.jumptoProduct(strCode: "1122334455")
     }
     func jumptoProduct(strCode:String) {
-        let result = Constants.baseURL + "product/ProductExist?code=" + strCode
+        let result = Constants.baseURL + "api/ProductExist?barcode=" + strCode + "&customerGuid=" + Resultvalue
         
         var request = URLRequest(url: URL(string: result)!,timeoutInterval: Double.infinity)
         request.httpMethod = "GET"
@@ -89,8 +89,8 @@ class UserBarcodeScannerVC: UIViewController,AVCaptureMetadataOutputObjectsDeleg
                 return
             }
             let resultApi = (String(data: data, encoding: .utf8)!)
-            let result = self.convertToDictionary(text: resultApi)
-            let bool = result!["success"] as? Bool ?? false
+            guard let result = self.convertToDictionary(text: resultApi) else { return }
+            let bool = result["success"] as? Bool ?? false
             
             if bool{
                 let links = Constants.baseURL + "product/ProductDetails?code=" + strCode
@@ -254,8 +254,8 @@ class UserBarcodeScannerVC: UIViewController,AVCaptureMetadataOutputObjectsDeleg
                 
                 print(finalQR)
                 
-                let result = Constants.baseURL + "product/ProductExist?code=" + finalQR
-                
+                let result = Constants.baseURL + "api/ProductExist?barcode=" + finalQR + "&customerGuid=" + Resultvalue
+
                 var request = URLRequest(url: URL(string: result)!,timeoutInterval: Double.infinity)
                 request.httpMethod = "GET"
                 let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -265,8 +265,8 @@ class UserBarcodeScannerVC: UIViewController,AVCaptureMetadataOutputObjectsDeleg
                         return
                     }
                     let resultApi = (String(data: data, encoding: .utf8)!)
-                    let result = self.convertToDictionary(text: resultApi)
-                    let bool = result!["success"] as? Bool ?? false
+                    guard let result = self.convertToDictionary(text: resultApi) else { return }
+                    let bool = result["success"] as? Bool ?? false
                     
                     if bool{
                         DispatchQueue.main.sync {

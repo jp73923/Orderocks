@@ -10,6 +10,10 @@ import OneSignal
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate , OSSubscriptionObserver {
+    
+    var isFromProductUpdate = false
+    var isProductId = ""
+
     func onOSSubscriptionChanged(_ stateChanges: OSSubscriptionStateChanges) {
         
         

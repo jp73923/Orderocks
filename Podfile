@@ -9,6 +9,7 @@ target 'OrderRocks' do
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
   pod 'SVProgressHUD'
   pod 'Alamofire', '~> 5.4.3'
+  pod 'ReachabilitySwift'
 end
 
 

@@ -58,6 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , OSSubscriptionObserver {
         UserDefaults.standard.synchronize()
     }
     func applicationDidBecomeActive(_ application: UIApplication) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CheckAppNewVersion"), object: nil)
         UserDefaults.standard.setValue(nil, forKey: "SaveOrderURL")
         UserDefaults.standard.synchronize()
     }

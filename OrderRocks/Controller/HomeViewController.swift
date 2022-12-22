@@ -7,7 +7,11 @@
 
 import UIKit
 import WebKit
+import SystemConfiguration
 
+enum VersionError: Error {
+    case invalidResponse, invalidBundleInfo
+}
 class HomeViewController: UIViewController {
     
     @IBOutlet var spinnerView: UIActivityIndicatorView!
@@ -28,9 +32,9 @@ class HomeViewController: UIViewController {
     var strOpenProductURLFromBarcodeScan:String = ""
     var counter:Int = 0
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         webUrl = Constants.baseURL // Assign Base Url
         
         let preferences = WKPreferences()
@@ -58,6 +62,84 @@ class HomeViewController: UIViewController {
         UserDefaults.standard.synchronize()
 
         self.navigationItem.hidesBackButton = true
+        
+        
+        //Version check
+        if self.isConnectedToNetwork(){
+            DispatchQueue.global().async {
+                do {
+                    let update = try self.isUpdateAvailable()
+                    DispatchQueue.main.async {
+                        if update{
+                                self.popupUpdateDialogue(isForceUpdate: false)
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.checkAppUpdate(notification:)), name: Notification.Name.init(rawValue: "CheckAppNewVersion"), object: nil)
+    }
+    func isConnectedToNetwork() -> Bool
+    {
+        var zeroAddress = sockaddr_in()
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        
+        guard let defaultRouteReachability = withUnsafePointer(to: &zeroAddress, {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+            }
+        })
+            else
+        {
+            return false
+        }
+        
+        var flags : SCNetworkReachabilityFlags = []
+        if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
+            return false
+        }
+        
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
+        let available =  (isReachable && !needsConnection)
+        if(available)
+        {
+            return true
+        }
+        else
+        {
+            self.InternetNotAvailablePopup()
+            return false
+        }
+    }
+    func InternetNotAvailablePopup() {
+        let alert = UIAlertController(title: "Internet connection seems offline need to check connectivity!!!", message: nil, preferredStyle: UIAlertController.Style.alert)
+        let noBtn = UIAlertAction(title:"Exit" , style: .destructive, handler: {(_ action: UIAlertAction) -> Void in
+            exit(0)
+        })
+        alert.addAction(noBtn)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func checkAppUpdate(notification: NSNotification) {
+        if self.isConnectedToNetwork(){
+            DispatchQueue.global().async {
+                do {
+                    let update = try self.isUpdateAvailable()
+                    DispatchQueue.main.async {
+                        if update{
+                            self.popupUpdateDialogue(isForceUpdate: false)
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+        }
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -98,6 +180,62 @@ class HomeViewController: UIViewController {
                 webView.load(URLRequest(url: url))
             }
         }
+    }
+    
+    func isUpdateAvailable() throws -> Bool {
+        guard let info = Bundle.main.infoDictionary,
+            let currentVersion = info["CFBundleShortVersionString"] as? String,
+            let identifier = info["CFBundleIdentifier"] as? String,
+            let url = URL(string: "http://itunes.apple.com/lookup?bundleId=\(identifier)") else {
+                throw VersionError.invalidBundleInfo
+        }
+        let data = try Data(contentsOf: url)
+        guard let json = try JSONSerialization.jsonObject(with: data, options: [.allowFragments]) as? [String: Any] else {
+            throw VersionError.invalidResponse
+        }
+        if let result = (json["results"] as? [Any])?.first as? [String: Any], let version = result["version"] as? String {
+            print("version in app store", version,currentVersion);
+            
+            let result = version.compare(currentVersion, options: .numeric)
+            switch result {
+            case .orderedSame :
+                print("versions are equal")
+                return false
+            case .orderedAscending :
+                print("version1 is less than version2")
+                return false
+            case .orderedDescending :
+                print("version1 is greater than version2")
+                return true
+            }
+        }
+        throw VersionError.invalidResponse
+    }
+    
+    func popupUpdateDialogue(isForceUpdate:Bool){
+        let alert = UIAlertController(title: "A new version of Orderocks is available on app store!!!", message: nil, preferredStyle: UIAlertController.Style.alert)
+        let okBtn = UIAlertAction(title: "Update now", style: .default, handler: {(_ action: UIAlertAction) -> Void in
+            if let url = URL(string: "https://apps.apple.com/us/app/orderocks/id1552924638"),
+               UIApplication.shared.canOpenURL(url){
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
+        })
+        alert.addAction(okBtn)
+        if isForceUpdate {
+            let noBtn = UIAlertAction(title:"Exit" , style: .destructive, handler: {(_ action: UIAlertAction) -> Void in
+                exit(0)
+            })
+            alert.addAction(noBtn)
+        } else {
+            let noBtn = UIAlertAction(title:"No, thanks" , style: .destructive, handler: {(_ action: UIAlertAction) -> Void in
+            })
+            alert.addAction(noBtn)
+        }
+        self.present(alert, animated: true, completion: nil)
     }
     
     @objc func backTapped() -> Void{

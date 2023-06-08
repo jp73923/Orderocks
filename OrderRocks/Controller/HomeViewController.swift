@@ -17,7 +17,8 @@ class HomeViewController: UIViewController {
     @IBOutlet var spinnerView: UIActivityIndicatorView!
     
     var webUrl = ""
-    
+    var customerGUID = ""
+
     var back = UIBarButtonItem()
     var webViewCookieStore: WKHTTPCookieStore!
     
@@ -31,7 +32,6 @@ class HomeViewController: UIViewController {
     var boolIsFromScanBarcodeProductOpen:Bool = false
     var strOpenProductURLFromBarcodeScan:String = ""
     var counter:Int = 0
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +71,7 @@ class HomeViewController: UIViewController {
                     let update = try self.isUpdateAvailable()
                     DispatchQueue.main.async {
                         if update{
-                                self.popupUpdateDialogue(isForceUpdate: false)
+                            self.popupUpdateDialogue(isForceUpdate: false)
                         }
                     }
                 } catch {
@@ -181,7 +181,7 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    
+
     func isUpdateAvailable() throws -> Bool {
         guard let info = Bundle.main.infoDictionary,
             let currentVersion = info["CFBundleShortVersionString"] as? String,
@@ -194,18 +194,13 @@ class HomeViewController: UIViewController {
             throw VersionError.invalidResponse
         }
         if let result = (json["results"] as? [Any])?.first as? [String: Any], let version = result["version"] as? String {
-            print("version in app store", version,currentVersion);
-            
             let result = version.compare(currentVersion, options: .numeric)
             switch result {
             case .orderedSame :
-                print("versions are equal")
                 return false
             case .orderedAscending :
-                print("version1 is less than version2")
                 return false
             case .orderedDescending :
-                print("version1 is greater than version2")
                 return true
             }
         }
@@ -312,7 +307,7 @@ class HomeViewController: UIViewController {
         let printInfo: UIPrintInfo = UIPrintInfo.printInfo()
         printInfo.outputType = .general
         printInfo.jobName = (self.webView.url?.absoluteString)!
-        print(self.webView.url?.absoluteString ?? "hvhg hbjh  j")
+        print(self.webView.url?.absoluteString ?? "")
         printInfo.duplex = .none
         printInfo.orientation = .portrait
         
@@ -330,12 +325,16 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
     
+    func webView(_ webView: WKWebView!, createWebViewWith configuration: WKWebViewConfiguration!, for navigationAction: WKNavigationAction!, windowFeatures: WKWindowFeatures!) -> WKWebView! {
+        if navigationAction.targetFrame == nil {
+            webView.load(navigationAction.request)
+        }
+        return nil
+    }
+    
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        
-        print(webView.url)
         spinnerView.isHidden = false
         spinnerView.startAnimating()
-        
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -414,10 +413,7 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
                UIApplication.shared.canOpenURL(url) {
                 //https://stage.orderocks.com/Admin/Product/ScanBarcode
                 let url_str = url.absoluteString
-                
                 if url_str.contains("PdfInvoice") {
-                    
-                    //printDoc()
                     downloadFile(url_Str: url_str)
                     decisionHandler(.cancel)
                 }
@@ -495,7 +491,8 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
                         let dict = i
                         if dict.name == ".Nop.Customer"{
                             if dict.value != "" {
-                                print(dict.value)
+                                self.customerGUID = dict.value
+                                self.sendTokenForPushAPI()
                             }
                         }
                     }
@@ -594,3 +591,37 @@ extension WKWebViewConfiguration {
     }
 }
 
+
+
+extension HomeViewController {
+    func sendTokenForPushAPI() {
+        let Url = String(format: Constants.baseURL + "https://shop.orderocks.com/API/AcceptCustomerDeviceDetai")
+        guard let serviceUrl = URL(string: Url) else { return }
+        let parameters: [String: Any] = [
+            "Guid" : customerGUID,
+            "token": "123"
+        ]
+        var request = URLRequest(url: serviceUrl)
+        request.httpMethod = "POST"
+        request.setValue("Application/json", forHTTPHeaderField: "Content-Type")
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
+            return
+        }
+        request.httpBody = httpBody
+        request.timeoutInterval = 20
+        let session = URLSession.shared
+        session.dataTask(with: request) { (data, response, error) in
+            if let response = response {
+                print(response)
+            }
+            if let data = data {
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    print(json)
+                } catch {
+                    print(error)
+                }
+            }
+        }.resume()
+    }
+}

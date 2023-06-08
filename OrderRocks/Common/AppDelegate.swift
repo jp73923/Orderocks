@@ -15,8 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate , OSSubscriptionObserver {
     var isProductId = ""
 
     func onOSSubscriptionChanged(_ stateChanges: OSSubscriptionStateChanges) {
-        
-        
         if !stateChanges.from.isSubscribed && stateChanges.to.isSubscribed {
             print("Subscribed for OneSignal push notifications!")
         }
@@ -27,7 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate , OSSubscriptionObserver {
             UserDefaults.standard.setValue(playerId, forKey:"device_token")
             UserDefaults.standard.synchronize()
         }
-        
         
     }
     
@@ -49,6 +46,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate , OSSubscriptionObserver {
         
         UIApplication.shared.statusBarUIView?.backgroundColor = UIColor.white
         //30, 93, 146
+        
+        //Push setup
+        self.registerForRemoteNotification()
+
         return true
     }
     
@@ -63,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate , OSSubscriptionObserver {
         UserDefaults.standard.synchronize()
     }
     //MARK: OneSignal Settings
-    func registerOneSignalNotification(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Void {
+ /*   func registerOneSignalNotification(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Void {
         
         let notifWillShowInForegroundHandler: OSNotificationWillShowInForegroundBlock = { notification, completion in
             print("Received Notification: ", notification.notificationId ?? "no id")
@@ -111,12 +112,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate , OSSubscriptionObserver {
           print("User accepted notifications: \(accepted)")
         })
         
-    }
+    }*/
     //MARK: Ends OneSignal Settings
     
     
 }
 
+
+//MARK: Remote notifications
+extension AppDelegate: UNUserNotificationCenterDelegate{
+    func registerForRemoteNotification() {
+        let center  = UNUserNotificationCenter.current()
+        center.delegate = self
+        center.requestAuthorization(options:[.alert, .sound]){ (granted, error) in }
+        UIApplication.shared.registerForRemoteNotifications()
+    }
+    
+    //MARK:- Get Device Token
+    func application(_ application: UIApplication, didRegister notificationSettings: UNNotificationSettings) {
+        if application.isRegisteredForRemoteNotifications == true{
+            application.registerForRemoteNotifications()
+        } else {
+            print("application.isRegisteredForRemoteNotifications() ====== \(application.isRegisteredForRemoteNotifications)")
+        }
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        NSLog("Device Token : %@", deviceTokenString)
+     //   UserDefaultManager.setStringToUserDefaults(value: deviceTokenString, key: UD_PushToken)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print(error, terminator: "")
+    }
+    
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        if #available(iOS 14.0, *) {
+            completionHandler([.sound, .banner])
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    //Called when a notification is delivered to a background app
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        completionHandler()
+    }
+}
 
 extension UIApplication {
 var statusBarUIView: UIView? {

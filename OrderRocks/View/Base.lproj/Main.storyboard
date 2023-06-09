@@ -17,21 +17,35 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="TOX-yJ-JJN">
-                                <rect key="frame" x="67" y="363" width="280" height="170"/>
+                                <rect key="frame" x="422" y="363" width="170" height="170"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="280" id="sXN-w9-ccS"/>
+                                    <constraint firstAttribute="width" constant="170" id="8cU-DS-ia8"/>
                                     <constraint firstAttribute="height" constant="170" id="yLR-4b-Bgf"/>
+                                </constraints>
+                            </imageView>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="FullLogo" translatesAutoresizingMaskIntoConstraints="NO" id="VQn-ZW-wdy">
+                                <rect key="frame" x="57" y="398" width="300" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="LVp-oP-L1l"/>
+                                    <constraint firstAttribute="height" constant="100" id="kAy-dB-DsG"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="TOX-yJ-JJN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Peo-vT-wN9"/>
+                            <constraint firstItem="TOX-yJ-JJN" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" constant="300" id="8jz-xB-spv"/>
+                            <constraint firstItem="VQn-ZW-wdy" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="OBv-Uv-j3H"/>
+                            <constraint firstItem="VQn-ZW-wdy" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Oll-Ez-ePv"/>
                             <constraint firstItem="TOX-yJ-JJN" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="SYL-hu-EYJ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="m7j-E9-Zec"/>
+                    <connections>
+                        <outlet property="centerConstant" destination="8jz-xB-spv" id="4Ec-03-yTA"/>
+                        <outlet property="imgFullLogo" destination="VQn-ZW-wdy" id="cti-n2-oYh"/>
+                        <outlet property="imgLogo" destination="TOX-yJ-JJN" id="okX-Y0-5Nh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -102,17 +116,26 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vMw-sF-zNe">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="e75-tt-p1Z">
+                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="e75-tt-p1Z">
                                         <rect key="frame" x="67" y="363" width="280" height="170"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="170" id="4YA-Hl-QcZ"/>
                                             <constraint firstAttribute="width" constant="280" id="QRY-r3-SSM"/>
                                         </constraints>
                                     </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="FullLogo" translatesAutoresizingMaskIntoConstraints="NO" id="26j-Ou-75F">
+                                        <rect key="frame" x="57" y="398" width="300" height="100"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="300" id="gKH-lr-cKM"/>
+                                            <constraint firstAttribute="height" constant="100" id="nwF-ej-AdO"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="e75-tt-p1Z" firstAttribute="centerX" secondItem="vMw-sF-zNe" secondAttribute="centerX" id="MbY-Mg-Qff"/>
+                                    <constraint firstItem="26j-Ou-75F" firstAttribute="centerY" secondItem="vMw-sF-zNe" secondAttribute="centerY" id="ojJ-i0-9YB"/>
+                                    <constraint firstItem="26j-Ou-75F" firstAttribute="centerX" secondItem="vMw-sF-zNe" secondAttribute="centerX" id="qod-it-Roe"/>
                                     <constraint firstItem="e75-tt-p1Z" firstAttribute="centerY" secondItem="vMw-sF-zNe" secondAttribute="centerY" id="xg0-vw-ENw"/>
                                 </constraints>
                             </view>
@@ -585,6 +608,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="FullLogo" width="200" height="50"/>
         <image name="Logo.png" width="503" height="501"/>
         <image name="Scannerview" width="375" height="812"/>
         <image name="back-1" width="250" height="250"/>

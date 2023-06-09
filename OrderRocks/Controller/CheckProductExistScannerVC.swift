@@ -211,12 +211,8 @@ class CheckProductExistScannerVC: UIViewController,AVCaptureMetadataOutputObject
             
             // Start video capture.
             captureSession?.startRunning()
-            
-            // Move the message label to the top view
-            // view.bringSubview(toFront: messageLabel)
-            
+                        
             // Initialize QR Code Frame to highlight the QR code
-
             qrCodeFrameView?.layer.borderColor = UIColor.red.cgColor
             qrCodeFrameView?.layer.borderWidth = 2
             qrCodeFrameView?.autoresizingMask = [UIView.AutoresizingMask.flexibleTopMargin, UIView.AutoresizingMask.flexibleBottomMargin, UIView.AutoresizingMask.flexibleLeftMargin, UIView.AutoresizingMask.flexibleRightMargin]
@@ -254,7 +250,6 @@ class CheckProductExistScannerVC: UIViewController,AVCaptureMetadataOutputObject
     }
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        
         if metadataObjects == nil || metadataObjects.count == 0 {
             qrCodeFrameView?.frame = CGRect.zero
             // messageLabel.text = "No QR code is detected"
@@ -272,18 +267,13 @@ class CheckProductExistScannerVC: UIViewController,AVCaptureMetadataOutputObject
             
             
             if metadataObj.stringValue != nil {
-                
-                //messageLabel.text = metadataObj.stringValue
                 lastCapturedCode = metadataObj.stringValue
                 
                 let qrScanValue = String(lastCapturedCode!)
-                print(qrScanValue)
                 var strProductId = ""
                 if let numberAsInt = Int(qrScanValue) as? Int{
                     strProductId = "\(numberAsInt)"
                 }
-                
-                print("Scan ProductID ==> ",strProductId)
                 
                 strProductId = strProductId.replacingOccurrences(of: "*", with: "")
                 strProductId = strProductId.replacingOccurrences(of: " ", with: "")
@@ -320,15 +310,13 @@ class CheckProductExistScannerVC: UIViewController,AVCaptureMetadataOutputObject
             ScannerInfoPopView.popUpView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
             ScannerInfoPopView.btnCancle.addTarget(self, action: #selector(self.Close(_:)), for: .touchUpInside)
             
-            UIView.animate(withDuration: 0.25)
-            {
+            UIView.animate(withDuration: 0.25) {
                 self.ScannerInfoPopView.popUpView.transform = CGAffineTransform.identity
            }
         }
     }
     
     @objc func FlashTapbtn(gesture: UIGestureRecognizer) {
-        
         guard let device = AVCaptureDevice.default(for: AVMediaType.video) else { return }
         guard device.hasTorch else { return }
         
@@ -407,10 +395,7 @@ class CheckProductExistScannerVC: UIViewController,AVCaptureMetadataOutputObject
         
         // Start video capture.
         captureSession?.startRunning()
-        
-        // Move the message label to the top view
-        // view.bringSubview(toFront: messageLabel)
-        
+                
         // Initialize QR Code Frame to highlight the QR code
         qrCodeFrameView = UIView()
         qrCodeFrameView?.layer.borderColor = UIColor.red.cgColor
@@ -429,7 +414,6 @@ class CheckProductExistScannerVC: UIViewController,AVCaptureMetadataOutputObject
 //***********************************************
 
 extension CheckProductExistScannerVC {
-    
     @IBAction func btnBackAction(_ sender: UIButton) {
         UserDefaults.standard.setValue(true, forKey: "Open_CheckOrder_Page")
         UserDefaults.standard.synchronize()

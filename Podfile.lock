@@ -1,28 +1,24 @@
 PODS:
   - Alamofire (5.4.3)
-  - OneSignal (3.4.3)
   - ReachabilitySwift (5.0.0)
   - SVProgressHUD (2.2.5)
 
 DEPENDENCIES:
   - Alamofire (~> 5.4.3)
-  - OneSignal (< 4.0, >= 3.0.0)
   - ReachabilitySwift
   - SVProgressHUD
 
 SPEC REPOS:
   trunk:
     - Alamofire
-    - OneSignal
     - ReachabilitySwift
     - SVProgressHUD
 
 SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
-  OneSignal: e4dfb1912410f302dc9661ce98fc829f6c18ff6a
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: 1af2f4319fbacda29982e310c61d14f96e1d29d7
+PODFILE CHECKSUM: 9d57831977ac294b7ce266784a2963cd0dcaa8b0
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

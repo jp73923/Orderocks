@@ -115,7 +115,6 @@ class GetOrderIdUsingScanVC: UIViewController,AVCaptureMetadataOutputObjectsDele
             let input: AnyObject!
             do {
                 input = try AVCaptureDeviceInput(device:audiocap)
-                //            self.captureDevice?.torchMode = .on
             } catch let error1 as NSError {
                 error = error1
                 input = nil
@@ -146,11 +145,7 @@ class GetOrderIdUsingScanVC: UIViewController,AVCaptureMetadataOutputObjectsDele
             // Start video capture.
             captureSession?.startRunning()
             
-            // Move the message label to the top view
-            // view.bringSubview(toFront: messageLabel)
-            
             // Initialize QR Code Frame to highlight the QR code
-
             qrCodeFrameView?.layer.borderColor = UIColor.red.cgColor
             qrCodeFrameView?.layer.borderWidth = 2
             qrCodeFrameView?.autoresizingMask = [UIView.AutoresizingMask.flexibleTopMargin, UIView.AutoresizingMask.flexibleBottomMargin, UIView.AutoresizingMask.flexibleLeftMargin, UIView.AutoresizingMask.flexibleRightMargin]
@@ -191,7 +186,6 @@ class GetOrderIdUsingScanVC: UIViewController,AVCaptureMetadataOutputObjectsDele
         
         if metadataObjects == nil || metadataObjects.count == 0 {
             qrCodeFrameView?.frame = CGRect.zero
-            // messageLabel.text = "No QR code is detected"
             return
         }
         
@@ -206,21 +200,12 @@ class GetOrderIdUsingScanVC: UIViewController,AVCaptureMetadataOutputObjectsDele
             
             
             if metadataObj.stringValue != nil {
-                
-                //messageLabel.text = metadataObj.stringValue
                 lastCapturedCode = metadataObj.stringValue
                 
                 var qrScanValue = String(lastCapturedCode!)
-                print(qrScanValue)
                 
                 qrScanValue = qrScanValue.replacingOccurrences(of: "*", with: "")
                 qrScanValue = qrScanValue.replacingOccurrences(of: " ", with: "")
-
-               /* let strURL = Constants.baseURL + "Admin/Order/OrderValidation?OrderId=" + qrScanValue
-                
-                UserDefaults.standard.setValue(strURL, forKey: "SaveOrderURL")
-                UserDefaults.standard.synchronize()
-                backVC()*/
                 
                 self.checkValidOrderId(orderID: qrScanValue)
                 
@@ -245,20 +230,15 @@ class GetOrderIdUsingScanVC: UIViewController,AVCaptureMetadataOutputObjectsDele
             let bool = result!["success"] as? Bool ?? false
             
             if bool{
-                //let links = Constants.baseURL + "product/ProductDetails?code=" + strCode
-                
                 DispatchQueue.main.sync {
                     let strURL = Constants.baseURL + "Admin/Order/OrderValidation?OrderId=" + orderID
 
                     UserDefaults.standard.setValue(strURL, forKey: "SaveOrderURL")
                     UserDefaults.standard.synchronize()
                     self.backVC()
-                   /* UserDefaults.standard.set(links, forKey: "Product_Open")
-                    UserDefaults.standard.synchronize()
-                    self.navigationController?.popViewController(animated: true)*/
                 }
                 
-            }else{
+            } else {
                 DispatchQueue.main.sync {
                         let alert = UIAlertController(title: nil, message: "Order id not valid!", preferredStyle: UIAlertController.Style.alert)
                         if #available(iOS 13.0, *) {
@@ -269,20 +249,7 @@ class GetOrderIdUsingScanVC: UIViewController,AVCaptureMetadataOutputObjectsDele
                         self.present(alert, animated: true, completion: nil)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                             self.dismiss(animated: true)
-                           // self.captureSession?.startRunning()
                         }
-                    
-                   /* let appdelegate = UIApplication.shared.delegate as! AppDelegate
-
-                    //(appdelegate.window!.rootViewController! as! UINavigationController).viewControllers.last!.view.addSubview(self.RetryScanViews)
-                    self.view.addSubview(self.RetryScanViews)
-                    self.RetryScanViews.frame = UIScreen.main.bounds
-                    self.RetryScanViews.PopUpView.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
-                    self.RetryScanViews.btnOpenCamera.addTarget(self, action: #selector(self.Opencamera(_:)), for: .touchUpInside)
-                    UIView.animate(withDuration: 0.25)
-                    {
-                        self.RetryScanViews.PopUpView.transform = CGAffineTransform.identity
-                    }*/
                 }
             }
         }

@@ -18,7 +18,7 @@ class HomeViewController: UIViewController {
     
     var webUrl = ""
     var customerGUID = ""
-
+    
     var back = UIBarButtonItem()
     var webViewCookieStore: WKHTTPCookieStore!
     
@@ -32,7 +32,7 @@ class HomeViewController: UIViewController {
     var boolIsFromScanBarcodeProductOpen:Bool = false
     var strOpenProductURLFromBarcodeScan:String = ""
     var counter:Int = 0
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         webUrl = Constants.baseURL // Assign Base Url
@@ -60,9 +60,8 @@ class HomeViewController: UIViewController {
         
         UserDefaults.standard.setValue(false, forKey: "Open_CheckOrder_Page")
         UserDefaults.standard.synchronize()
-
-        self.navigationItem.hidesBackButton = true
         
+        self.navigationItem.hidesBackButton = true
         
         //Version check
         if self.isConnectedToNetwork(){
@@ -79,11 +78,9 @@ class HomeViewController: UIViewController {
                 }
             }
         }
-        
         NotificationCenter.default.addObserver(self, selector: #selector(self.checkAppUpdate(notification:)), name: Notification.Name.init(rawValue: "CheckAppNewVersion"), object: nil)
     }
-    func isConnectedToNetwork() -> Bool
-    {
+    func isConnectedToNetwork() -> Bool {
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
@@ -92,9 +89,7 @@ class HomeViewController: UIViewController {
             $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
                 SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
             }
-        })
-            else
-        {
+        }) else {
             return false
         }
         
@@ -106,12 +101,9 @@ class HomeViewController: UIViewController {
         let isReachable = flags.contains(.reachable)
         let needsConnection = flags.contains(.connectionRequired)
         let available =  (isReachable && !needsConnection)
-        if(available)
-        {
+        if(available) {
             return true
-        }
-        else
-        {
+        } else {
             self.InternetNotAvailablePopup()
             return false
         }
@@ -181,14 +173,14 @@ class HomeViewController: UIViewController {
             }
         }
     }
-
+    
     func isUpdateAvailable() throws -> Bool {
         guard let info = Bundle.main.infoDictionary,
-            let currentVersion = info["CFBundleShortVersionString"] as? String,
-            let identifier = info["CFBundleIdentifier"] as? String,
-            let url = URL(string: "http://itunes.apple.com/lookup?bundleId=\(identifier)") else {
-                throw VersionError.invalidBundleInfo
-        }
+              let currentVersion = info["CFBundleShortVersionString"] as? String,
+              let identifier = info["CFBundleIdentifier"] as? String,
+              let url = URL(string: "http://itunes.apple.com/lookup?bundleId=\(identifier)") else {
+                  throw VersionError.invalidBundleInfo
+              }
         let data = try Data(contentsOf: url)
         guard let json = try JSONSerialization.jsonObject(with: data, options: [.allowFragments]) as? [String: Any] else {
             throw VersionError.invalidResponse
@@ -226,8 +218,7 @@ class HomeViewController: UIViewController {
             })
             alert.addAction(noBtn)
         } else {
-            let noBtn = UIAlertAction(title:"No, thanks" , style: .destructive, handler: {(_ action: UIAlertAction) -> Void in
-            })
+            let noBtn = UIAlertAction(title:"No, thanks" , style: .destructive, handler: {(_ action: UIAlertAction) -> Void in })
             alert.addAction(noBtn)
         }
         self.present(alert, animated: true, completion: nil)
@@ -250,17 +241,12 @@ class HomeViewController: UIViewController {
     
     func downloadFile(url_Str: String){
         let url = url_Str
-        
         let Array = url.components(separatedBy: "/")
         var str = Array[Array.count - 1]
-        
         str = str.replacingOccurrences(of: "?", with: "")
         str = str.replacingOccurrences(of: "=", with: "")
-
         let fileName = str
-        
         savePdf(urlString: url, fileName: fileName)
-        
     }
     
     func savePdf(urlString:String, fileName:String) {
@@ -289,42 +275,33 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func printBtnClicked(_ sender: Any) {
-        
         self.printDoc()
-        
     }
     
     @IBAction func btnScanBarcode(_ sender: Any) {
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
             self.showVC(UserBarcodeScannerVC.self)
         }
     }
-  
-    
     func printDoc() -> Void {
-        
         let printInfo: UIPrintInfo = UIPrintInfo.printInfo()
         printInfo.outputType = .general
         printInfo.jobName = (self.webView.url?.absoluteString)!
         print(self.webView.url?.absoluteString ?? "")
         printInfo.duplex = .none
         printInfo.orientation = .portrait
-        
         let printController = UIPrintInteractionController.shared
         printController.printPageRenderer = nil
         printController.printingItems = nil
         printController.printingItem = webView.url!
-        
         printController.printInfo = printInfo
         printController.showsNumberOfCopies = true
-        
         printController.present(animated: true, completionHandler: nil)
     }
 }
 
+//MARK: - WKNavigationDelegate, WKUIDelegate
 extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
-    
     func webView(_ webView: WKWebView!, createWebViewWith configuration: WKWebViewConfiguration!, for navigationAction: WKNavigationAction!, windowFeatures: WKWindowFeatures!) -> WKWebView! {
         if navigationAction.targetFrame == nil {
             webView.load(navigationAction.request)
@@ -338,18 +315,13 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        
         if(webView.canGoBack) {
-            
             back.tintColor = .white
-            
         } else {
             back.tintColor = AppColor
         }
-        
         spinnerView.isHidden = true
         spinnerView.stopAnimating()
-        
     }
     
     func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
@@ -366,24 +338,22 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
     func webView(webView: WKWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebView.NavigationType) -> Bool {
         if request.url?.absoluteString == "iosapp://click" {
             // what do you want to do.
-         }
-         // or you can do as like this.
+        }
+        // or you can do as like this.
         if request.url?.scheme == "iosapp" {
-             if request.url?.host == "click" {
+            if request.url?.host == "click" {
                 // what do you want to do.
-             }
-             return false
-         }
-        
-         return true
+            }
+            return false
+        }
+        return true
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        
         let cookieScript = "document.cookie;"
-           webView.evaluateJavaScript(cookieScript) { (response, error) in
+        webView.evaluateJavaScript(cookieScript) { (response, error) in
             if let response = response {
-                    print(response as! String)
+                print(response as! String)
             }
         }
         
@@ -417,17 +387,15 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
                     downloadFile(url_Str: url_str)
                     decisionHandler(.cancel)
                 }
-                
                 if url_str.contains("apple.com") || url_str.contains("play.google.com") {
                     UIApplication.shared.open(url)
                     decisionHandler(.allow)
-                    
                 }else{
                     if url_str.contains("Product/ScanBarcode")  || url_str.contains("ScanBarcodeUpdateToProduct") {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
-                              //  UserDefaults.standard.setValue(false, forKey: "Open_CheckOrder_Page")
-                              //  UserDefaults.standard.synchronize()
+                                //  UserDefaults.standard.setValue(false, forKey: "Open_CheckOrder_Page")
+                                //  UserDefaults.standard.synchronize()
                                 if url_str.contains("ScanBarcodeUpdateToProduct") {
                                     appdelegate.isFromProductUpdate = true
                                     appdelegate.isProductId = url_str.components(separatedBy: "=")[1]
@@ -447,7 +415,7 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
                                 decisionHandler(.allow)
                             }
                         }
-                    }else if url_str.contains("OrderProductScanWithBarcode") { //For check product exist in order
+                    } else if url_str.contains("OrderProductScanWithBarcode") { //For check product exist in order
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
                                 UserDefaults.standard.setValue(false, forKey: "Open_CheckOrder_Page")
@@ -456,7 +424,7 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
                                 decisionHandler(.allow)
                             }
                         }
-                    }else if url_str.contains("OrderValidationScanOrderNumber") { // For scan order id and fetch
+                    } else if url_str.contains("OrderValidationScanOrderNumber") { // For scan order id and fetch
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
                                 UserDefaults.standard.setValue(false, forKey: "Open_CheckOrder_Page")
@@ -465,14 +433,11 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
                                 decisionHandler(.allow)
                             }
                         }
-                    }else if url_str.contains("PdfInvoice") {
+                    } else if url_str.contains("PdfInvoice") {
                         return
-                    }else {
-                        
+                    } else {
                         decisionHandler(.allow)
-                        
                         guard let urlAsString = navigationAction.request.url?.absoluteString.lowercased() else {
-                            
                             print(navigationAction.request.url?.absoluteString.lowercased() as Any)
                             return
                         }
@@ -503,73 +468,52 @@ extension HomeViewController: WKNavigationDelegate, WKUIDelegate{
                 }
                 print(cookies)
             }
-            
             decisionHandler(.allow)
         }
-        
     }
 }
 
 extension HomeViewController {
     func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
-
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
-
         alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
             completionHandler()
         }))
-
         self.present(alertController, animated: true, completion: nil)
     }
-
+    
     func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
-
         var alertController = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
-
         if (UIDevice.current.userInterfaceIdiom == .pad) {
             alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         }
-        
         alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
             completionHandler(true)
         }))
-
         alertController.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
             completionHandler(false)
         }))
-
         self.present(alertController, animated: true, completion: nil)
     }
-
+    
     func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void) {
-
         let alertController = UIAlertController(title: nil, message: prompt, preferredStyle: .alert)
-
         alertController.addTextField { (textField) in
             textField.text = defaultText
         }
-
         alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
             if let text = alertController.textFields?.first?.text {
                 completionHandler(text)
             } else {
                 completionHandler(defaultText)
             }
-
         }))
-
         alertController.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
-
             completionHandler(nil)
-
         }))
-
         self.present(alertController, animated: true, completion: nil)
-
     }
 }
-
-
 extension WKWebViewConfiguration {
     /// Async Factory method to acquire WKWebViewConfigurations packaged with system cookies
     static func cookiesIncluded(completion: @escaping (WKWebViewConfiguration?) -> Void) {
@@ -590,9 +534,6 @@ extension WKWebViewConfiguration {
         }
     }
 }
-
-
-
 extension HomeViewController {
     func sendTokenForPushAPI() {
         let Url = String(format: Constants.baseURL + "https://shop.orderocks.com/API/AcceptCustomerDeviceDetai")

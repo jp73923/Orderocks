@@ -15,7 +15,8 @@ enum VersionError: Error {
 class HomeViewController: UIViewController {
     
     @IBOutlet var spinnerView: UIActivityIndicatorView!
-    
+    @IBOutlet var imgX: NSLayoutConstraint!
+
     var webUrl = ""
     var customerGUID = ""
     
@@ -55,6 +56,11 @@ class HomeViewController: UIViewController {
         webView.allowsLinkPreview = true
         webView.allowsBackForwardNavigationGestures = true
         webView.allowsBackForwardNavigationGestures = true
+        
+        UIView.animate(withDuration: 0.5) {
+            self.imgX.constant = 300.0
+            self.view.layoutIfNeeded()
+        }
         
         perform(#selector(hideSplash), with: nil, afterDelay: 1.0)
         

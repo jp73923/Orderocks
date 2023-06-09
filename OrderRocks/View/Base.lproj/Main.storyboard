@@ -16,25 +16,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="TOX-yJ-JJN">
-                                <rect key="frame" x="422" y="363" width="170" height="170"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="170" id="8cU-DS-ia8"/>
-                                    <constraint firstAttribute="height" constant="170" id="yLR-4b-Bgf"/>
-                                </constraints>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="FullLogo" translatesAutoresizingMaskIntoConstraints="NO" id="VQn-ZW-wdy">
+                                <rect key="frame" x="107" y="423" width="200" height="50"/>
                             </imageView>
-                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="FullLogo" translatesAutoresizingMaskIntoConstraints="NO" id="VQn-ZW-wdy">
-                                <rect key="frame" x="57" y="398" width="300" height="100"/>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="TOX-yJ-JJN">
+                                <rect key="frame" x="147.5" y="410.5" width="75" height="75"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="LVp-oP-L1l"/>
-                                    <constraint firstAttribute="height" constant="100" id="kAy-dB-DsG"/>
+                                    <constraint firstAttribute="width" constant="75" id="8cU-DS-ia8"/>
+                                    <constraint firstAttribute="height" constant="75" id="yLR-4b-Bgf"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="TOX-yJ-JJN" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" constant="300" id="8jz-xB-spv"/>
+                            <constraint firstItem="TOX-yJ-JJN" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" constant="-22" id="8jz-xB-spv"/>
                             <constraint firstItem="VQn-ZW-wdy" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="OBv-Uv-j3H"/>
                             <constraint firstItem="VQn-ZW-wdy" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Oll-Ez-ePv"/>
                             <constraint firstItem="TOX-yJ-JJN" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="SYL-hu-EYJ"/>
@@ -42,9 +38,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="m7j-E9-Zec"/>
                     <connections>
-                        <outlet property="centerConstant" destination="8jz-xB-spv" id="4Ec-03-yTA"/>
                         <outlet property="imgFullLogo" destination="VQn-ZW-wdy" id="cti-n2-oYh"/>
                         <outlet property="imgLogo" destination="TOX-yJ-JJN" id="okX-Y0-5Nh"/>
+                        <outlet property="imgWidth" destination="8cU-DS-ia8" id="ydd-gH-tkk"/>
+                        <outlet property="imgX" destination="8jz-xB-spv" id="a40-pM-w4d"/>
+                        <outlet property="imgheight" destination="yLR-4b-Bgf" id="gXN-NZ-nay"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -116,19 +114,15 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vMw-sF-zNe">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
-                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="e75-tt-p1Z">
-                                        <rect key="frame" x="67" y="363" width="280" height="170"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="e75-tt-p1Z">
+                                        <rect key="frame" x="107" y="348" width="200" height="200"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="170" id="4YA-Hl-QcZ"/>
-                                            <constraint firstAttribute="width" constant="280" id="QRY-r3-SSM"/>
+                                            <constraint firstAttribute="height" constant="200" id="4YA-Hl-QcZ"/>
+                                            <constraint firstAttribute="width" constant="200" id="QRY-r3-SSM"/>
                                         </constraints>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="FullLogo" translatesAutoresizingMaskIntoConstraints="NO" id="26j-Ou-75F">
-                                        <rect key="frame" x="57" y="398" width="300" height="100"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="300" id="gKH-lr-cKM"/>
-                                            <constraint firstAttribute="height" constant="100" id="nwF-ej-AdO"/>
-                                        </constraints>
+                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="FullLogo" translatesAutoresizingMaskIntoConstraints="NO" id="26j-Ou-75F">
+                                        <rect key="frame" x="107" y="423" width="200" height="50"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -161,6 +155,7 @@
                     </view>
                     <connections>
                         <outlet property="btnScanBarcode" destination="ZFX-XQ-vS4" id="5Zu-hM-B6A"/>
+                        <outlet property="imgX" destination="MbY-Mg-Qff" id="xLQ-Oe-d59"/>
                         <outlet property="printBtn" destination="7PT-i4-Ikw" id="dws-kz-1x0"/>
                         <outlet property="spinnerView" destination="dwI-PA-zsq" id="exs-Ic-4hK"/>
                         <outlet property="splashVew" destination="vMw-sF-zNe" id="14N-MT-btH"/>
